@@ -1,4 +1,6 @@
 import os
+import posixpath
+
 from docutils import nodes
 from sphinx.util.fileutil import copy_asset
 
@@ -20,8 +22,10 @@ def add_llm_link_node(app, doctree, docname):
     if app.builder.format != 'html':
         return
 
-    llm_page_name = f"{docname}.txt"
-    relative_link = app.builder.get_relative_uri(docname, llm_page_name)
+    # llm_page_name = f"{posixpath.basename(docname)}.txt"
+    # relative_link = app.builder.get_relative_uri(llm_page_name, llm_page_name)
+    current_filename = posixpath.basename(docname)
+    relative_link = f"{current_filename}.txt"
 
     # Cleaner HTML without inline styles
     html_content = f'''
