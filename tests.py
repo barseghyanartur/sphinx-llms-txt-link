@@ -81,13 +81,13 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
 
         # Write the minimal config
         (self.docs_dir / "conf.py").write_text(MINIMAL_CONF_PY,
-                                               encoding='utf-8')
+                                               encoding="utf-8")
 
         # Write the source documents
         (self.docs_dir / "index.rst").write_text(MINIMAL_INDEX_RST,
-                                                 encoding='utf-8')
+                                                 encoding="utf-8")
         (self.docs_dir / "guide/install.rst").write_text(NESTED_INSTALL_RST,
-                                                         encoding='utf-8')
+                                                         encoding="utf-8")
 
     def test_01_full_build_and_link_injection(self):
         """
@@ -109,7 +109,7 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
         # --- 2. Check Root Document (index.html) ---
         index_html_path = self.build_dir / "index.html"
         self.assertTrue(index_html_path.exists())
-        index_content = index_html_path.read_text(encoding='utf-8')
+        index_content = index_html_path.read_text(encoding="utf-8")
 
         # Assert the link is present and points to the sibling file
         expected_root_link = 'href="index.txt"'
@@ -127,7 +127,7 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
         # --- 3. Check Nested Document (guide/install.html) ---
         install_html_path = self.build_dir / "guide/install.html"
         self.assertTrue(install_html_path.exists())
-        install_content = install_html_path.read_text(encoding='utf-8')
+        install_content = install_html_path.read_text(encoding="utf-8")
 
         # Assert the link is present and points to the sibling
         # file (install.txt)
