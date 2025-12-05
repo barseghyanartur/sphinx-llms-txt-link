@@ -80,14 +80,20 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
         (self.docs_dir / "guide").mkdir(exist_ok=True)
 
         # Write the minimal config
-        (self.docs_dir / "conf.py").write_text(MINIMAL_CONF_PY,
-                                               encoding="utf-8")
+        (self.docs_dir / "conf.py").write_text(
+            MINIMAL_CONF_PY,
+            encoding="utf-8",
+        )
 
         # Write the source documents
-        (self.docs_dir / "index.rst").write_text(MINIMAL_INDEX_RST,
-                                                 encoding="utf-8")
-        (self.docs_dir / "guide/install.rst").write_text(NESTED_INSTALL_RST,
-                                                         encoding="utf-8")
+        (self.docs_dir / "index.rst").write_text(
+            MINIMAL_INDEX_RST,
+            encoding="utf-8",
+        )
+        (self.docs_dir / "guide/install.rst").write_text(
+            NESTED_INSTALL_RST,
+            encoding="utf-8",
+        )
 
     def test_01_full_build_and_link_injection(self):
         """
