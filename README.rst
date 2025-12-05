@@ -1,157 +1,130 @@
-================
-sphinx-no-pragma
-================
+====================
+sphinx-llms-txt-link
+====================
 .. External references
 
 .. _Sphinx: https://github.com/sphinx-doc/sphinx
-.. _jsphinx: https://jsphinx.readthedocs.io/
-.. _MyPy: https://mypy.readthedocs.io/
+.. _Read the Docs: http://readthedocs.org/
+.. _LLMOps: https://en.wikipedia.org/wiki/LLMOps
+.. _AI Safety: https://en.wikipedia.org/wiki/AI_safety
 
 .. Internal references
 
-.. _sphinx-no-pragma: https://github.com/barseghyanartur/sphinx-no-pragma/
-.. _Read the Docs: http://sphinx-no-pragma.readthedocs.io/
-.. _Demo: http://sphinx-no-pragma.readthedocs.io/en/latest/demo.html
-.. _Contributor guidelines: https://sphinx-no-pragma.readthedocs.io/en/latest/contributor_guidelines.html
-.. _llms.txt: https://barseghyanartur.github.io/sphinx-no-pragma/llms.txt
+.. _sphinx-llms-txt-link: https://github.com/barseghyanartur/sphinx-llms-txt-link/
+.. _Read the Docs project: http://sphinx-llms-txt-link.readthedocs.io/
+.. _Contributor guidelines: https://sphinx-llms-txt-link.readthedocs.io/en/latest/contributor_guidelines.html
+.. _llms.txt: https://barseghyanartur.github.io/sphinx-llms-txt-link/llms.txt
 
-**Improve developer experience**:
+**Optimize for LLM Consumption**:
 
-- Write better docs.
-- Do not repeat yourself.
-- Assure code low-maintenance.
+- Ensure content is readily accessible to text-only crawlers.
+- Provide a clean, structured version of documentation for LLM training.
+- Maximize indexability (SEO) of supplemental documentation links.
 
-.. image:: https://img.shields.io/pypi/v/sphinx-no-pragma.svg
-   :target: https://pypi.python.org/pypi/sphinx-no-pragma.py
+.. image:: https://img.shields.io/pypi/v/sphinx-llms-txt-link.svg
+   :target: https://pypi.python.org/pypi/sphinx-llms-txt-link.py
    :alt: PyPI Version
 
-.. image:: https://img.shields.io/pypi/pyversions/sphinx-no-pragma.svg
-    :target: https://pypi.python.org/pypi/sphinx-no-pragma/
+.. image:: https://img.shields.io/pypi/pyversions/sphinx-llms-txt-link.svg
+    :target: https://pypi.python.org/pypi/sphinx-llms-txt-link/
     :alt: Supported Python versions
 
-.. image:: https://github.com/barseghyanartur/sphinx-no-pragma/actions/workflows/test.yml/badge.svg?branch=main
-   :target: https://github.com/barseghyanartur/sphinx-no-pragma/actions
+.. image:: https://github.com/barseghyanartur/sphinx-llms-txt-link/actions/workflows/test.yml/badge.svg?branch=main
+   :target: https://github.com/barseghyanartur/sphinx-llms-txt-link/actions
    :alt: Build Status
 
-.. image:: https://readthedocs.org/projects/sphinx-no-pragma/badge/?version=latest
-    :target: http://sphinx-no-pragma.readthedocs.io
+.. image:: https://readthedocs.org/projects/sphinx-llms-txt-link/badge/?version=latest
+    :target: http://sphinx-llms-txt-link.readthedocs.io
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/badge/docs-llms.txt-blue
-    :target: https://barseghyanartur.github.io/sphinx-no-pragma/llms.txt
+    :target: https://barseghyanartur.github.io/sphinx-llms-txt-link/llms.txt
     :alt: llms.txt - documentation for LLMs
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
-   :target: https://github.com/barseghyanartur/sphinx-no-pragma/#License
+   :target: https://github.com/barseghyanartur/sphinx-llms-txt-link/#License
    :alt: MIT
 
-.. image:: https://coveralls.io/repos/github/barseghyanartur/sphinx-no-pragma/badge.svg?branch=main&service=github
-    :target: https://coveralls.io/github/barseghyanartur/sphinx-no-pragma?branch=main
+.. image:: https://coveralls.io/repos/github/barseghyanartur/sphinx-llms-txt-link/badge.svg?branch=main&service=github
+    :target: https://coveralls.io/github/barseghyanartur/sphinx-llms-txt-link?branch=main
     :alt: Coverage
 
 **TL;DR**
 
-`sphinx-no-pragma`_ is a `Sphinx`_ extension for stripping pragma comments
-from source code used in documentation.
+`sphinx-llms-txt-link`_ is a `Sphinx`_ extension that reliably injects
+a **server-side rendered** link to the `.txt` version of each page,
+specifically optimized for `LLMOps`_ and training consumption.
 
 If that's all you need to know to move forward, jump right to the
 `installation`_. Otherwise, read further.
 
 ----
 
-Some say, "documentation is the king". Others argue - "no, demos are". While
-some say, "testing is everything!" and yet there will be someone else who
-will jump in with "write clean code! black, isort, mypy and ruff everywhere!"
+The rapid evolution of Large Language Models (LLMs) means that documentation
+is now consumed not just by humans, but by automated systems for training,
+RAG (Retrieval-Augmented Generation), and general knowledge retrieval.
 
-And yet there's you, who want to be good and write a better package, because
-there's a generic problem that needs to be solved, and you know how, you want
-to share it with the world. You also want to assure or at least make an effort
-in making your project developer friendly, attractive for making contributions,
-which eventually leads to continuous improvement and make it live long(er).
+While standard HTML is indexable, providing a clean, unstyled, structured
+text version of documentation (like the standard `.txt` output from Sphinx)
+is invaluable for these systems. However, linking to these `.txt` artifacts
+reliably presents a challenge.
 
-So, combining the best practices, you:
+- **The Problem:** Using client-side JavaScript to inject these links is
+  unreliable. Many LLM crawlers, RAG systems, and basic scrapers do not
+  execute JavaScript, causing them to miss the link entirely. This defeats
+  the purpose of creating the LLM-optimized content.
+- **The Solution:** This project injects the link directly into the static
+  HTML source during the Sphinx build process (server-side). This guarantees
+  that the link is present and crawlable by every system, regardless of
+  JavaScript capabilities, ensuring maximum **SEO**
+  and **LLM data availability**.
 
-- Introduce examples in your repository to make it easier to start with.
-- Write awesome docs with usage examples (by eventually repeating yourself,
-  copying things from your actual code examples).
-- Write tests for your code. Then you realize it's good to test the examples
-  too. Eventually, you have now almost the same code in 3 places: tests,
-  examples and docs.
-- Introduce linters and `MyPy`_.
-
-Then you invest your time in making sure all your code looks correct and fix
-the never-ending `MyPy`_ issues.
-
-Then you need to make a small change, which unfortunately, among other,
-requires altering the examples code. You need to change the examples, the
-docs, the tests and the examples tests. However, you also need to push the
-change quickly. As many times before, you skip documentation update,
-leaving it for "another time".
-
-By that time you discover that code maintenance is a hell. You fix everything,
-tests pass you're happy to push, by then `MyPy`_ starts to nag about issues
-you have no idea how to solve and by that moment you don't care about them.
-You're sick of it and start using pragma comments to silence the errors,
-leaving the fix for another day. Your maintenance work involves a lot of
-copy-pasting from one place to another (examples, tests, documentation).
-
-Does this sound familiar?
-
-----
-
-What if I tell you that actually a couple of steps can be taken out.
-Namely, that you can use your example code directly in your documentation,
-using ``.. literalinclude::`` directive of `Sphinx`_. That part has already
-been well covered in `jsphinx`_ project (JavaScript primarily). However,
-what `jsphinx`_ didn't solve is presence of pragma comments in your
-documentation. This project does take care of that part.
-You don't need to choose or balance between readability, explainability and
-low-maintenance.
-
-Written by lazy developer for lazy developers to improve developer experience
-in writing low-maintenance code.
+This project provides a robust solution for forward-thinking developer
+experience, bridging the gap between human-readable documentation and
+machine-consumable data.
 
 Features
 ========
-- Accurately stips out pragma comments from your source code that you include
-  in your documentation.
+- **Server-Side Injection:** Uses the `doctree-resolved` hook to insert
+  a `docutils.nodes.raw` element, ensuring the link is in the static HTML
+  source.
+- **100% Indexable:** Guarantees visibility for all crawlers (Google,
+  specialized LLM scrapers, RAG indexers).
+- **Theme Agnostic:** Works reliably across themes (Read the Docs, Alabaster,
+  Furo, etc.) without requiring template overrides.
+- **Auto-Calculated Relative Path:** Correctly calculates the relative path
+  to the sibling `.txt` file, avoiding common issues with Sphinx's internal
+  link resolution.
+- **Simple Styling Integration:** Injects a standard CSS class (`llm-link`)
+  for easy styling and theme-specific overrides.
 
 Prerequisites
 =============
-Python 3.9+
+- Python 3.10+
+- Sphinx 6.0+
+
+Your Sphinx documentation must be configured to output `.txt` files (e.g.,
+using `sphinx_markdown_builder` or ensuring the `text` builder runs).
 
 Installation
 ============
 .. code-block:: sh
 
-    pip install sphinx-no-pragma
+    pip install sphinx-llms-txt-link
 
 Documentation
 =============
-- Documentation is available on `Read the Docs`_.
+- Documentation is available on the `Read the Docs project`_.
 - For guidelines on contributing check the `Contributor guidelines`_.
 
 Usage example
 =============
-In order to move forward, you first need to get educate yourself a little on
-`Sphinx`_'s directives. Namely the ``.. literalinclude::`` and ``:download:``.
-For that, first read the `jsphinx`_ documentation.
+### Sphinx configuration
 
-But there might be a little problem with that. Of course you might be lucky and
-have zero pragma comments in your code (no ``# noqa``,
-no ``# type: ignore``, etc). But more often, you get at least a couple of
-these. Your perfectionist nature doesn't easily allow you to let them be
-part of your concise, beautiful documentation. Cursing me for earlier
-advices, you start to replace your DRY documentation part with copy-pasted
-examples.
-
-This is where this package jumps in. It simply is a `Sphinx`_ extension that
-strips all pragma comments from your code that goes into documentation.
-
-Sphinx configuration
---------------------
 Essential configuration
 ~~~~~~~~~~~~~~~~~~~~~~~
+Add the extension to your `conf.py`. No other configuration is required.
+
 *Filename: docs/conf.py*
 
 .. code-block:: python
@@ -159,143 +132,57 @@ Essential configuration
 
     extensions = [
         # ... other extensions
-        "sphinx_no_pragma",
+        "sphinx_llms_txt_link",
         # ... other extensions
     ]
 
-Fine-tuning what to strip
+Custom Styling (Optional)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-By default, the following markers are stripped:
 
-- ``# type: ignore``
-- ``# noqa``
-- ``# pragma: no cover``
-- ``# pragma: no branch``
-- ``# fmt: off``
-- ``# fmt: on``
-- ``# fmt: skip``
-- ``# yapf: disable``
-- ``# yapf: enable``
-- ``# pylint: disable``
-- ``# pylint: enable``
-- ``# flake8: noqa``
-- ``# noinspection``
-- ``# pragma: allowlist secret``
-- ``# pragma: NOSONAR``
+The extension injects the following minimal HTML structure at the end of the
+document body:
 
-If you want to alter the default behaviour, define
-a ``ignore_comments_endings`` variable in your Sphinx configuration
-file (``docs/conf.py``) as shown below:
+.. code-block:: html
+
+    <div class="llm-link-container">
+        <a href="current_page_name.txt" class="llm-link">
+            View llms.txt version
+        </a>
+    </div>
+
+If you wish to style the link to match your theme (e.g., `Alabaster` or
+`Read the Docs`), you can create a CSS file (e.g., `_static/llm_link.css`)
+and include it in your `conf.py` settings:
 
 *Filename: docs/conf.py*
 
 .. code-block:: python
-    :name: test_docs_conf_ignore_comments_endings
+    :name: test_docs_conf_add_css
 
-    ignore_comments_endings = [
-        "# type: ignore",
-        "# noqa",
-        "# pragma: no cover",
-        "# pragma: no branch",
-        "# fmt: off",
-        "# fmt: skip",
-        "# yapf: disable",
-        "# pylint: disable",
-        "# flake8: noqa",
-        "# noinspection",
+    html_css_files = [
+        'llm_link.css',
     ]
 
-If you want to simply extend the list of markers, use another variable
-to define your own list, that would be appended to the default one.
-
-*Filename: docs/conf.py*
-
-.. code-block:: python
-    :name: test_docs_conf_user_ignore_comments_endings
-
-    # Set user defined endings
-    user_ignore_comments_endings = [
-        "# [start]",
-    ]
-
-Code example
-------------
-*Filename: examples/example_1.py*
-
-.. code-block:: python
-    :name: test_examples_example_1
-
-    from typing import Any, Optional
-
-    class ThirdPartyLibrary:
-        @staticmethod
-        def get_dynamic_object() -> Any:
-            # Returns an object whose type is not known at compile time
-            return "a string"  # In reality, this could be any type
-
-
-    # Usage of the third-party library
-    obj = ThirdPartyLibrary.get_dynamic_object()
-
-    # Attempt to use the object as a string, even though its type is 'Any'
-    length = len(obj)  # type: ignore
-
-    # Deliberately long line to violate PEP 8 line length rule, suppressed with noqa
-    print(f"The length of the object, a dynamically typed one, is just {length}")  # noqa
-
-Given that this is your code structure:
-
-.. code-block:: text
-
-    ├── examples
-    │  └── example_1.py
-    ├── docs
-    │  ├── conf.py
-    │  ├── index.rst
-    │  ├── Makefile
-    │  ├── _static
-    │  │  └── example_1.py
-    │  └── usage.rst
-    ├── LICENSE
-    ├── Makefile
-    ├── pyproject.toml
-    ├── README.rst
-    └── sphinx_no_pragma.py
-
-Either use ``html_extra_path = ["examples"]`` or make a symlink to
-``examples/example_1.py`` from ``docs/_static``.
-
-Then include it in your docs as follows:
-
-*Filename: example.rst*
-
-.. code-block:: rst
-
-    .. container:: jsphinx-download
-
-    .. literalinclude:: _static/example_1.py
-        :name: test_example_1
-        :language: python
-        :lines: 1-
-
-    *See the full example*
-    :download:`here <_static/example_1.py>`
-
-Now, rendered, your code will not contain `# type: ignore` or `# noqa` pragma
-comments.
-
-See the `demo`_. Click on the `See the full example here` link to see
-the original code.
-
-Tests
-=====
-Run the tests with unittest:
+Build process
+~~~~~~~~~~~~~
+Ensure you run the standard HTML build command. If you use a tool
+like `sphinx-markdown-builder` or a custom extension to generate the `.txt`
+artifacts, ensure those artifacts exist in the build directory.
 
 .. code-block:: sh
 
-    python -m unittest sphinx_no_pragma.py
+    # Builds the HTML output and injects the link
+    sphinx-build -b html docs/ _build/html
 
-Or pytest:
+    # Optional: ensure your .txt files are also generated
+    sphinx-build -b text docs/ _build/text
+
+The link will now appear at the bottom of every generated HTML page, pointing
+correctly to its `.txt` counterpart, irrespective of nested directory depth.
+
+Tests
+=====
+Run the tests with pytest:
 
 .. code-block:: sh
 
@@ -310,7 +197,7 @@ Support
 For security issues contact me at the e-mail given in the `Author`_ section.
 
 For overall issues, go to
-`GitHub <https://github.com/barseghyanartur/sphinx-no-pragma/issues>`_.
+`GitHub <https://github.com/barseghyanartur/sphinx-llms-txt-link/issues>`_.
 
 Author
 ======
