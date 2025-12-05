@@ -119,7 +119,8 @@ Documentation
 
 Usage example
 =============
-### Sphinx configuration
+Sphinx configuration
+--------------------
 
 Essential configuration
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,7 +137,7 @@ Add the extension to your `conf.py`. No other configuration is required.
         # ... other extensions
     ]
 
-Custom Styling (Optional)
+Custom styling (optional)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The extension injects the following minimal HTML structure at the end of the
@@ -151,8 +152,9 @@ document body:
     </div>
 
 If you wish to style the link to match your theme (e.g., `Alabaster` or
-`Read the Docs`), you can create a CSS file (e.g., `_static/llm_link.css`)
-and include it in your `conf.py` settings:
+`Read the Docs`), you can create a CSS file (e.g.,
+`_static/custom_sphinx_llms_txt_link.css`) and include it in
+your `conf.py` settings:
 
 *Filename: docs/conf.py*
 
@@ -160,7 +162,7 @@ and include it in your `conf.py` settings:
     :name: test_docs_conf_add_css
 
     html_css_files = [
-        'llm_link.css',
+        'custom_sphinx_llms_txt_link.css',
     ]
 
 Build process
