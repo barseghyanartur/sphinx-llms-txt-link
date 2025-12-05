@@ -42,8 +42,8 @@ def add_llm_link_node(app, doctree, docname):
 def copy_custom_css(app, exception):
     # This hook ensures the CSS file is copied to the build static directory
     if app.builder.format == 'html' and not exception:
-        # Assuming the css file is in a folder named '_static' relative to this script
-        # You might need to adjust based on your package structure
+        # Assuming the css file is in a folder named '_static' relative to
+        # this script. You might need to adjust based on your package structure
         # For this example, we'll assume you ship a file named 'llm_link.css'
         pass
         # In a real plugin, you'd use sphinx.util.fileutil.copy_asset here
@@ -71,5 +71,7 @@ def setup(app):
 def add_static_path(app):
     # This assumes 'assets' is a folder inside your python package
     # containing llm_link.css
-    static_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'assets'))
+    static_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), 'assets')
+    )
     app.config.html_static_path.append(static_path)
