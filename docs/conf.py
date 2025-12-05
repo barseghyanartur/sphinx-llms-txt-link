@@ -98,3 +98,6 @@ todo_include_todos = True
 # ]
 # Set user defined endings
 user_ignore_comments_endings = ["# [start]"]
+
+# -- sphinx-llms-txt-link configuration --------------------------------------
+# sphinx_llms_txt_link_url_prefix = "../txt"
