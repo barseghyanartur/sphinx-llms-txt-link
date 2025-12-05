@@ -2,11 +2,7 @@ import unittest
 import posixpath
 from docutils import nodes
 from typing import Any, List, Tuple
-
-
-# NOTE: The code below contains minimal class definitions (MockApp, MockDoctree, etc.)
-# to simulate the necessary Sphinx objects. This avoids "mocking" the tested function's
-# logic, instead fabricating the environment required for execution.
+from unittest.mock import Mock, MagicMock
 
 # --- Minimal Classes for Test Environment ---
 
@@ -34,7 +30,7 @@ class MockApp:
         self.add_css_calls: List[str] = []
         self.builder = MockBuilder(builder_format)
         # Required attributes for setup() if a full build were run
-        self.config = unittest.mock.MagicMock()
+        self.config = MagicMock()
 
     def connect(self, event: str, function: Any):
         """Records the event and handler function."""
@@ -76,7 +72,7 @@ def setup(app: MockApp):
     The setup function: registers the handler and CSS file.
     """
     app.connect('doctree-resolved', add_llm_link_node)
-    app.add_css_file('llm_link.css')
+    app.add_css_file('sphinx_llms_txt_link.css')
 
     return {
         'version': '0.3',

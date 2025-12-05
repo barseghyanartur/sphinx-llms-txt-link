@@ -158,7 +158,7 @@ addopts = [
    "--capture=no",
 ]
 testpaths = [
-    "sphinx_no_pragma.py",
+    "sphinx_llms_txt_link.py",
     "test*.py",
     "**/*.rst",
     "**/*.md",
