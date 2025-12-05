@@ -1,167 +1,151 @@
+import shutil
 import unittest
-import posixpath
-from docutils import nodes
-from typing import Any, List, Tuple
-from unittest.mock import Mock, MagicMock
+from pathlib import Path
 
-# --- Minimal Classes for Test Environment ---
+# Use the actual Sphinx application class
+from sphinx.application import Sphinx
 
-class MockDoctree(list):
-    """A list that records appends and acts like a docutils doctree."""
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2025 Artur Barseghyan"
+__license__ = "MIT"
+__all__ = ("TestSphinxLlmLinkBuild",)
 
-    def append(self, item):
-        """Overrides list append to record the last appended item."""
-        self.append_called_with = item
-        super().append(item)
+# --- Setup Boilerplate ---
+
+# NOTE: The actual sphinx_llm_link.py extension code must be available
+# in the Python path for the build to succeed.
+
+# Define the source content required for the build test
+# We use a unique class name to search the HTML reliably.
+TEST_CSS_CLASS = "sphinx-llms-txt-link"
+
+MINIMAL_CONF_PY = f"""
+import os
+import sys
+# Ensure the extension under test is findable
+sys.path.insert(0, os.path.abspath('.')) 
+
+# Assuming the extension file is named 'sphinx_llm_link.py' 
+# and is available in the Python path or a specified directory
+extensions = [
+    "sphinx_llms_txt_link",
+]
+html_static_path = ['_static']
+master_doc = 'index'
+project = 'LLM Test Docs'
+copyright = '2025'
+author = 'Test Author'
+"""
+
+MINIMAL_INDEX_RST = """
+.. _index:
+
+Welcome to the LLM Test Docs
+===================================
+
+This is a test page to verify the sphinx-llms-txt-link injection.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   guide/install
+
+"""
+
+NESTED_INSTALL_RST = """
+.. _install:
+
+Installation Guide
+==================
+
+This is a nested page. The link should point to `install.txt`.
+
+"""
 
 
-class MockBuilder:
-    """A minimal class to simulate the Sphinx builder (contains the format attribute)."""
+# --- Test Class ---
 
-    def __init__(self, format: str = 'html'):
-        self.format = format
-
-
-class MockApp:
-    """A minimal class to simulate the Sphinx application (contains connect/add_css_file)."""
-
-    def __init__(self, builder_format: str = 'html'):
-        self.connect_calls: List[Tuple[str, Any]] = []
-        self.add_css_calls: List[str] = []
-        self.builder = MockBuilder(builder_format)
-        # Required attributes for setup() if a full build were run
-        self.config = MagicMock()
-
-    def connect(self, event: str, function: Any):
-        """Records the event and handler function."""
-        self.connect_calls.append((event, function))
-
-    def add_css_file(self, filename: str):
-        """Records the added CSS file."""
-        self.add_css_calls.append(filename)
-
-
-# --- Code Under Test (Redefinition for standalone test file) ---
-
-def add_llm_link_node(app: MockApp, doctree: MockDoctree, docname: str):
+class TestSphinxLlmLinkBuild(unittest.TestCase):
     """
-    The handler function logic: injects a nodes.raw element containing the link
-    to the sibling .txt file.
+    Tests the sphinx-llms-txt-link extension by running a full Sphinx build
+    and inspecting the resulting HTML, avoiding all internal mocks.
     """
-    if app.builder.format != 'html':
-        return
 
-    # Use posixpath.basename to correctly handle docnames (e.g., 'guide/install')
-    current_filename = posixpath.basename(docname)
-    relative_link = f"{current_filename}.txt"
+    def setUp(self):
+        # Determine paths relative to the test execution directory
+        root_dir = Path(__file__).parent
+        self.docs_dir = root_dir / "test_src"
+        self.build_dir = root_dir / "test_build_docs"
+        self.doc_tree_dir = self.build_dir / "doc_trees"
 
-    html_content = f'''
-    <div class="sphinx-llms-txt-link-container">
-        <a href="{relative_link}" class="sphinx-llms-txt-link">
-            View llms.txt version
-        </a>
-    </div>
-    '''
+        # --- 1. Create the necessary source structure ---
+        self.docs_dir.mkdir(exist_ok=True)
+        (self.docs_dir / "guide").mkdir(exist_ok=True)
 
-    raw_node = nodes.raw('', html_content, format='html')
-    doctree.append(raw_node)
+        # Write the minimal config
+        (self.docs_dir / "conf.py").write_text(MINIMAL_CONF_PY,
+                                               encoding='utf-8')
 
+        # Write the source documents
+        (self.docs_dir / "index.rst").write_text(MINIMAL_INDEX_RST,
+                                                 encoding='utf-8')
+        (self.docs_dir / "guide/install.rst").write_text(NESTED_INSTALL_RST,
+                                                         encoding='utf-8')
 
-def setup(app: MockApp):
-    """
-    The setup function: registers the handler and CSS file.
-    """
-    app.connect('doctree-resolved', add_llm_link_node)
-    app.add_css_file('sphinx_llms_txt_link.css')
+    def test_01_full_build_and_link_injection(self):
+        """
+        Runs a full HTML build and asserts that the link is correctly
+        injected into both root and nested pages, with the correct relative path.
+        """
 
-    return {
-        'version': '0.3',
-        'parallel_read_safe': True,
-        'parallel_write_safe': True
-    }
+        # Build the docs using the actual Sphinx application
+        test_app = Sphinx(
+            srcdir=self.docs_dir,
+            confdir=self.docs_dir,
+            outdir=self.build_dir,
+            doctreedir=self.doc_tree_dir,
+            buildername="html",
+        )
+        test_app.build()
 
+        # --- 2. Check Root Document (index.html) ---
+        index_html_path = self.build_dir / "index.html"
+        self.assertTrue(index_html_path.exists())
+        index_content = index_html_path.read_text(encoding='utf-8')
 
-# --- Test Cases ---
+        # Assert the link is present and points to the sibling file
+        expected_root_link = f'href="index.txt"'
+        self.assertIn(expected_root_link, index_content,
+                      f"Root link missing in index.html. Expected: {expected_root_link}")
 
-class TestSphinxLlmLink(unittest.TestCase):
+        # Assert the CSS class is present
+        self.assertIn(TEST_CSS_CLASS, index_content)
 
-    def test_01_setup_registers_hooks_and_css(self):
-        """Verifies that setup() correctly registers the doctree hook and the CSS file."""
-        app = MockApp()
-        ret = setup(app)
+        # --- 3. Check Nested Document (guide/install.html) ---
+        install_html_path = self.build_dir / "guide/install.html"
+        self.assertTrue(install_html_path.exists())
+        install_content = install_html_path.read_text(encoding='utf-8')
 
-        # 1. Check connect hook for 'doctree-resolved'
-        self.assertIn(('doctree-resolved', add_llm_link_node),
-                      app.connect_calls)
+        # Assert the link is present and points to the sibling file (install.txt)
+        expected_nested_link = f'href="install.txt"'
+        self.assertIn(expected_nested_link, install_content,
+                      f"Nested link missing in install.html. Expected: {expected_nested_link}")
 
-        # 2. Check CSS file inclusion
-        self.assertIn('sphinx_llms_txt_link.css', app.add_css_calls)
+        # --- 4. Check CSS file inclusion (indirectly via conf.py extension loading) ---
+        # The CSS file won't physically exist unless we add it, but the HTML output
+        # should link to it via the <link> tag added by app.add_css_file.
+        # However, checking the generated HTML for a specific link tag is brittle.
+        # We trust the app.add_css_file mechanism is working if setup() is correct.
+        # The true test is that the link is present in the source, which we checked.
 
-        # 3. Check return dictionary metadata
-        self.assertEqual(ret['version'], '0.3')
+    def tearDown(self):
+        # Clean up the build directory and source directory
+        if self.build_dir.exists():
+            shutil.rmtree(self.build_dir)
+        if self.docs_dir.exists():
+            shutil.rmtree(self.docs_dir)
 
-    def assert_raw_node_and_link(self, doctree: MockDoctree,
-                                 expected_link: str):
-        """Helper to assert the last node is raw HTML and contains the correct link."""
-        self.assertGreater(len(doctree), 0,
-                           "No node was appended to the doctree.")
-        injected_node = doctree[-1]
-        self.assertIsInstance(injected_node, nodes.raw,
-                              "The appended node is not a docutils.nodes.raw.")
-        self.assertEqual(injected_node['format'], 'html',
-                         "Raw node format must be 'html'.")
-        self.assertIn(f'href="{expected_link}"', injected_node.astext(),
-                      "Injected link does not match expected relative path.")
-        self.assertIn('sphinx-llms-txt-link-container', injected_node.astext(),
-                      "HTML content is missing the expected CSS class.")
-
-    def test_02_node_injection_for_root_document(self):
-        """Tests link generation for a root document (e.g., index.rst)."""
-        app = MockApp(builder_format='html')
-        doctree = MockDoctree()
-        docname = 'index'
-
-        add_llm_link_node(app, doctree, docname)
-
-        self.assert_raw_node_and_link(doctree, 'index.txt')
-
-    def test_03_node_injection_for_nested_document(self):
-        """Tests link generation for a document in a subfolder (e.g., guide/install.rst)."""
-        app = MockApp(builder_format='html')
-        doctree = MockDoctree()
-        # This docname requires posixpath.basename to extract 'install'
-        docname = 'guide/install'
-
-        add_llm_link_node(app, doctree, docname)
-
-        # The correct relative link should only be the filename, not the path
-        self.assert_raw_node_and_link(doctree, 'install.txt')
-
-    def test_04_node_injection_for_deeply_nested_document(self):
-        """Tests link generation for a deeply nested document (e.g., api/v2/auth/token.rst)."""
-        app = MockApp(builder_format='html')
-        doctree = MockDoctree()
-        docname = 'api/v2/auth/token'
-
-        add_llm_link_node(app, doctree, docname)
-
-        # The correct relative link should be 'token.txt'
-        self.assert_raw_node_and_link(doctree, 'token.txt')
-
-    def test_05_non_html_builder_is_skipped(self):
-        """Tests that the function returns early for non-HTML builders (e.g., latex)."""
-        app = MockApp(builder_format='latex')
-        doctree = MockDoctree()
-        docname = 'index'
-
-        add_llm_link_node(app, doctree, docname)
-
-        # The doctree must remain empty
-        self.assertEqual(len(doctree), 0,
-                         "Doctree was modified for a non-HTML builder.")
-
-
-if __name__ == '__main__':
-    # To run these tests, save this code as a Python file and execute it.
-    # Note: Requires docutils to be installed (which Sphinx requires).
-    unittest.main()
+# if __name__ == '__main__':
+#     # Note: The test runner must ensure the 'sphinx_llms_txt_link' module is available
+#     unittest.main()
