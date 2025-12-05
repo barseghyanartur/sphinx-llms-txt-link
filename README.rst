@@ -15,6 +15,10 @@ sphinx-llms-txt-link
 .. _Contributor guidelines: https://sphinx-llms-txt-link.readthedocs.io/en/latest/contributor_guidelines.html
 .. _llms.txt: https://barseghyanartur.github.io/sphinx-llms-txt-link/llms.txt
 
+Automatically add a static link to the raw rendered text
+version (reStructuredText or Markdown format) of every HTML
+documentation page.
+
 **Optimize for LLM Consumption**:
 
 - Provides a direct link to the **raw, rendered text markup** for the current
@@ -52,8 +56,8 @@ sphinx-llms-txt-link
 
 **TL;DR**
 
-`sphinx-llms-txt-link`_ is a `Sphinx`_ extension that reliably injects
-a **server-side rendered** link to the `.txt` version of each page,
+`sphinx-llms-txt-link`_ is a `Sphinx`_ extension that injects
+a **server-side rendered** link to the `.txt` version of each HTML page,
 specifically optimized for `LLMOps`_ and training consumption.
 
 Features
