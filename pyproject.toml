@@ -37,11 +37,9 @@ keywords = ["sphinx", "documentation", "pragma"]
 [project.optional-dependencies]
 all = ["sphinx-llms-txt-link[dev,test,docs]"]
 dev = [
-    "black",
     "detect-secrets",
     "doc8",
     "ipython",
-    "isort",
     "mypy",
     "ruff",
     "twine",

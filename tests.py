@@ -2,7 +2,6 @@ import shutil
 import unittest
 from pathlib import Path
 
-# Use the actual Sphinx application class
 from sphinx.application import Sphinx
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
@@ -12,14 +11,11 @@ __all__ = ("TestSphinxLlmLinkBuild",)
 
 # --- Setup Boilerplate ---
 
-# NOTE: The actual sphinx_llm_link.py extension code must be available
-# in the Python path for the build to succeed.
-
 # Define the source content required for the build test
 # We use a unique class name to search the HTML reliably.
 TEST_CSS_CLASS = "sphinx-llms-txt-link"
 
-MINIMAL_CONF_PY = f"""
+MINIMAL_CONF_PY = """
 import os
 import sys
 # Ensure the extension under test is findable
@@ -96,7 +92,8 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
     def test_01_full_build_and_link_injection(self):
         """
         Runs a full HTML build and asserts that the link is correctly
-        injected into both root and nested pages, with the correct relative path.
+        injected into both root and nested pages, with the correct relative
+        path.
         """
 
         # Build the docs using the actual Sphinx application
@@ -115,9 +112,14 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
         index_content = index_html_path.read_text(encoding='utf-8')
 
         # Assert the link is present and points to the sibling file
-        expected_root_link = f'href="index.txt"'
-        self.assertIn(expected_root_link, index_content,
-                      f"Root link missing in index.html. Expected: {expected_root_link}")
+        expected_root_link = 'href="index.txt"'
+        self.assertIn(
+            expected_root_link, index_content,
+            (
+                f"Root link missing in index.html. "
+                f"Expected: {expected_root_link}"
+            ),
+        )
 
         # Assert the CSS class is present
         self.assertIn(TEST_CSS_CLASS, index_content)
@@ -127,17 +129,24 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
         self.assertTrue(install_html_path.exists())
         install_content = install_html_path.read_text(encoding='utf-8')
 
-        # Assert the link is present and points to the sibling file (install.txt)
-        expected_nested_link = f'href="install.txt"'
-        self.assertIn(expected_nested_link, install_content,
-                      f"Nested link missing in install.html. Expected: {expected_nested_link}")
+        # Assert the link is present and points to the sibling
+        # file (install.txt)
+        expected_nested_link = 'href="install.txt"'
+        self.assertIn(
+            expected_nested_link, install_content,
+            (
+                f"Nested link missing in install.html. "
+                f"Expected: {expected_nested_link}"
+            ),
+        )
 
-        # --- 4. Check CSS file inclusion (indirectly via conf.py extension loading) ---
-        # The CSS file won't physically exist unless we add it, but the HTML output
-        # should link to it via the <link> tag added by app.add_css_file.
-        # However, checking the generated HTML for a specific link tag is brittle.
-        # We trust the app.add_css_file mechanism is working if setup() is correct.
-        # The true test is that the link is present in the source, which we checked.
+        # 4. Check CSS file inclusion (indirectly by conf.py extension loading)
+        # The CSS file won't physically exist unless we add it, but the HTML
+        # output should link to it via the <link> tag added
+        # by app.add_css_file. However, checking the generated HTML for a
+        # specific link tag is brittle. We trust the app.add_css_file
+        # mechanism is working if setup() is correct. The true test is that
+        # the link is present in the source, which we checked.
 
     def tearDown(self):
         # Clean up the build directory and source directory
@@ -145,7 +154,3 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
             shutil.rmtree(self.build_dir)
         if self.docs_dir.exists():
             shutil.rmtree(self.docs_dir)
-
-# if __name__ == '__main__':
-#     # Note: The test runner must ensure the 'sphinx_llms_txt_link' module is available
-#     unittest.main()

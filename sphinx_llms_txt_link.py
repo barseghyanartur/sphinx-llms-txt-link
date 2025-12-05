@@ -2,7 +2,6 @@ import os
 import posixpath
 
 from docutils import nodes
-from sphinx.util.fileutil import copy_asset
 
 
 __title__ = "sphinx-llms-txt-link"

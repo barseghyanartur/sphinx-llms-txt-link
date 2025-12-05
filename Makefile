@@ -19,20 +19,12 @@ rebuild_docs:
 pre-commit:
 	pre-commit run --all-files
 
-# Format code using Black
-black:
-	source $(VENV) && black .
-
-# Sort imports using isort
-isort:
-	source $(VENV) && isort . --overwrite-in-place
-
 doc8:
 	source $(VENV) && doc8
 
 # Run ruff on the codebase
 ruff:
-	source $(VENV) && ruff .
+	source $(VENV) && ruff check .
 
 # Serve the built docs on port 5001
 serve_docs:
