@@ -1,19 +1,19 @@
 /* Base styles (fallback for unknown themes) */
-.llm-link-container {
+.sphinx-llms-txt-link-container {
     margin-top: 2rem;
     padding-top: 1rem;
     border-top: 1px solid #e1e4e5; /* Neutral grey */
     font-family: Lato, proxima-nova, "Helvetica Neue", Arial, sans-serif;
 }
 
-.llm-link {
+.sphinx-llms-txt-link {
     font-size: 0.85rem;
     color: #777;
     text-decoration: none;
     display: inline-block;
 }
 
-.llm-link:hover {
+.sphinx-llms-txt-link:hover {
     text-decoration: underline;
     color: #333;
 }
@@ -22,7 +22,7 @@
 
 /* Alabaster */
 /* Alabaster is usually narrower and uses serif fonts for body text */
-body.alabaster .llm-link-container {
+body.alabaster .sphinx-llms-txt-link-container {
     border-top-color: #eee;
     font-family: 'Garamond', 'Georgia', serif;
     /* Match Alabaster's default font stack if possible, or inherit */
@@ -31,21 +31,21 @@ body.alabaster .llm-link-container {
 
 /* Read the Docs (sphinx_rtd_theme) */
 /* RTD uses specific blues and a sans-serif font stack */
-.wy-body-for-nav .llm-link-container {
+.wy-body-for-nav .sphinx-llms-txt-link-container {
     border-top: 1px solid #e1e4e5; /* Matches RTD hr color */
     font-family: "Lato", "proxima-nova", "Helvetica Neue", Arial, sans-serif;
 }
 
-.wy-body-for-nav .llm-link {
+.wy-body-for-nav .sphinx-llms-txt-link {
     color: #2980B9; /* The classic RTD Link Blue */
 }
 
-.wy-body-for-nav .llm-link:hover {
+.wy-body-for-nav .sphinx-llms-txt-link:hover {
     color: #3091d1;
 }
 
 /* Optional: Add a small icon using CSS content if you want to be fancy */
-.llm-link::before {
+.sphinx-llms-txt-link::before {
     content: "📄 ";
     opacity: 0.7;
 }

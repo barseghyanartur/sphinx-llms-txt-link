@@ -55,34 +55,6 @@ sphinx-llms-txt-link
 a **server-side rendered** link to the `.txt` version of each page,
 specifically optimized for `LLMOps`_ and training consumption.
 
-If that's all you need to know to move forward, jump right to the
-`installation`_. Otherwise, read further.
-
-----
-
-The rapid evolution of Large Language Models (LLMs) means that documentation
-is now consumed not just by humans, but by automated systems for training,
-RAG (Retrieval-Augmented Generation), and general knowledge retrieval.
-
-While standard HTML is indexable, providing a clean, unstyled, structured
-text version of documentation (like the standard `.txt` output from Sphinx)
-is invaluable for these systems. However, linking to these `.txt` artifacts
-reliably presents a challenge.
-
-- **The Problem:** Using client-side JavaScript to inject these links is
-  unreliable. Many LLM crawlers, RAG systems, and basic scrapers do not
-  execute JavaScript, causing them to miss the link entirely. This defeats
-  the purpose of creating the LLM-optimized content.
-- **The Solution:** This project injects the link directly into the static
-  HTML source during the Sphinx build process (server-side). This guarantees
-  that the link is present and crawlable by every system, regardless of
-  JavaScript capabilities, ensuring maximum **SEO**
-  and **LLM data availability**.
-
-This project provides a robust solution for forward-thinking developer
-experience, bridging the gap between human-readable documentation and
-machine-consumable data.
-
 Features
 ========
 - **Server-Side Injection:** Uses the `doctree-resolved` hook to insert
@@ -95,8 +67,9 @@ Features
 - **Auto-Calculated Relative Path:** Correctly calculates the relative path
   to the sibling `.txt` file, avoiding common issues with Sphinx's internal
   link resolution.
-- **Simple Styling Integration:** Injects a standard CSS class (`llm-link`)
-  for easy styling and theme-specific overrides.
+- **Simple Styling Integration:** Injects a standard CSS
+  class (`sphinx-llms-txt-link`) for easy styling and theme-specific
+  overrides.
 
 Prerequisites
 =============
@@ -162,7 +135,7 @@ your `conf.py` settings:
     :name: test_docs_conf_add_css
 
     html_css_files = [
-        'custom_sphinx_llms_txt_link.css',
+        "custom_sphinx_llms_txt_link.css",
     ]
 
 Build process

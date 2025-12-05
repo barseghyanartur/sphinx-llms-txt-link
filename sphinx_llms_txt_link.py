@@ -29,8 +29,8 @@ def add_llm_link_node(app, doctree, docname):
 
     # Cleaner HTML without inline styles
     html_content = f'''
-    <div class="llm-link-container">
-        <a href="{relative_link}" class="llm-link">
+    <div class="sphinx-llms-txt-link-container">
+        <a href="{relative_link}" class="sphinx-llms-txt-link">
             View llms.txt version
         </a>
     </div>
