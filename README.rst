@@ -151,14 +151,14 @@ artifacts, ensure those artifacts exist in the build directory.
 
 .. code-block:: sh
 
-    # Builds the HTML output and injects the link
-    sphinx-build -b html docs/ _build/html
+    # Build the .txt files
+    sphinx-build -n -b text docs builddocs
 
-    # Optional: ensure your .txt files are also generated
-    sphinx-build -b text docs/ _build/text
+    # Build the HTML output and inject the link
+    sphinx-build -n -a -b html docs builddocs
 
 The link will now appear at the bottom of every generated HTML page, pointing
-correctly to its `.txt` counterpart, irrespective of nested directory depth.
+correctly to its `.txt` counterpart.
 
 Tests
 =====

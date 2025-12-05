@@ -73,8 +73,13 @@ compile-requirements-upgrade:
 	source $(VENV) && uv pip compile --all-extras -o docs/requirements.txt pyproject.toml --upgrade
 
 update-version:
-	sed -i 's/version = "[0-9.]\+"/version = "$(VERSION)"/' pyproject.toml
-	sed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' sphinx_llms_txt_link.py
+	@if [ "$(UNAME_S)" = "Darwin" ]; then \
+		gsed -i 's/version = "[0-9.]\+"/version = "$(VERSION)"/' pyproject.toml; \
+		gsed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' sphinx_llms_txt_link.py; \
+	else \
+		sed -i 's/version = "[0-9.]\+"/version = "$(VERSION)"/' pyproject.toml; \
+		sed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' sphinx_llms_txt_link.py; \
+	fi
 
 build:
 	source $(VENV) && python -m build .
