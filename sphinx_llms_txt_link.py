@@ -20,10 +20,28 @@ def add_llm_link_node(app, doctree, docname):
     if app.builder.format != "html":
         return
 
-    # llm_page_name = f"{posixpath.basename(docname)}.txt"
-    # relative_link = app.builder.get_relative_uri(llm_page_name, llm_page_name)
+    # 1. Get the base filename (e.g., 'intro' from 'guide/intro')
     current_filename = posixpath.basename(docname)
-    relative_link = f"{current_filename}.txt"
+    target_file = f"{current_filename}.txt"
+
+    # 2. Retrieve user config for the prefix
+    # Defaults to empty string (sibling directory)
+    url_prefix = app.config.sphinx_llms_txt_link_url_prefix
+
+    # 3. Construct the final link
+    # If the user provided a prefix, we join it.
+    # Note: We use posixpath.join to ensure forward slashes for URLs
+    # regardless of the OS running the build.
+    if url_prefix:
+        # Check if it's an absolute URL (http) or a relative path
+        if "://" in url_prefix or url_prefix.startswith("/"):
+            relative_link = posixpath.join(url_prefix, target_file)
+        else:
+            # If it's a relative path structure (e.g. "../text_versions"),
+            # it implies relative to the current page location.
+            relative_link = posixpath.join(url_prefix, target_file)
+    else:
+        relative_link = target_file
 
     # Cleaner HTML without inline styles
     html_content = f"""
@@ -59,6 +77,10 @@ def setup(app):
     # Standard way for plugins:
     # Use app.connect('builder-inited', ...) to append to html_static_path
     app.connect("builder-inited", add_static_path)
+
+    # format: name, default, rebuild-trigger
+    # 'html' means rebuilding html is required if this changes
+    app.add_config_value("sphinx_llms_txt_link_url_prefix", "", "html")
 
     return {
         "version": "0.2",

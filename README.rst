@@ -17,9 +17,10 @@ sphinx-llms-txt-link
 
 **Optimize for LLM Consumption**:
 
-- Ensure content is readily accessible to text-only crawlers.
-- Provide a clean, structured version of documentation for LLM training.
-- Maximize indexability (SEO) of supplemental documentation links.
+- Provides a direct link to the **raw, rendered text markup** for the current
+  page.
+- Enables developers to quickly copy clean, structured context for feeding
+  into an LLM prompt.
 
 .. image:: https://img.shields.io/pypi/v/sphinx-llms-txt-link.svg
    :target: https://pypi.python.org/pypi/sphinx-llms-txt-link.py
