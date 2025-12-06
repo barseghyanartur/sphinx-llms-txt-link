@@ -27,6 +27,7 @@ def add_llm_link_node(app, doctree, docname):
     # 2. Retrieve user config for the prefix
     # Defaults to empty string (sibling directory)
     url_prefix = app.config.sphinx_llms_txt_link_url_prefix
+    link_text = app.config.sphinx_llms_txt_link_text
 
     # 3. Construct the final link
     # If the user provided a prefix, we join it.
@@ -47,7 +48,7 @@ def add_llm_link_node(app, doctree, docname):
     html_content = f"""
     <div class="sphinx-llms-txt-link-container">
         <a href="{relative_link}" class="sphinx-llms-txt-link">
-            View llms.txt version
+            {link_text}
         </a>
     </div>
     """
@@ -81,9 +82,15 @@ def setup(app):
     # format: name, default, rebuild-trigger
     # 'html' means rebuilding html is required if this changes
     app.add_config_value("sphinx_llms_txt_link_url_prefix", "", "html")
+    # Config for the text displayed in the link
+    app.add_config_value(
+        "sphinx_llms_txt_link_text", 
+        "View llms.txt version", 
+        "html",
+    )
 
     return {
-        "version": "0.1",
+        "version": __version__,
         "parallel_read_safe": True,
         "parallel_write_safe": True
     }
