@@ -4,13 +4,12 @@ import posixpath
 from docutils import nodes
 
 __title__ = "sphinx-llms-txt-link"
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "add_llm_link_node",
-    "copy_custom_css",
     "setup",
     "add_static_path",
 )
@@ -73,8 +72,8 @@ def setup(app):
     app.add_config_value("sphinx_llms_txt_link_url_prefix", "", "html")
     # Config for the text displayed in the link
     app.add_config_value(
-        "sphinx_llms_txt_link_text", 
-        "View llms.txt version", 
+        "sphinx_llms_txt_link_text",
+        "View llms.txt version",
         "html",
     )
 

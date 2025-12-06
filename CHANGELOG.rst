@@ -16,6 +16,20 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.2
+-----
+2025-12-06
+
+- Minor fixes.
+- 100% coverage.
+- Make the link text customisable.
+
+0.1.1
+-----
+2025-12-06
+
+- Minor fixes.
+
 0.1
 ---
 2025-12-06
