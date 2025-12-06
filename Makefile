@@ -1,8 +1,9 @@
 # Update version ONLY here
-VERSION := 0.1
+VERSION := 0.1.1
 SHELL := /bin/bash
 # Makefile for project
 VENV := ~/.virtualenvs/sphinx-llms-txt-link/bin/activate
+UNAME_S := $(shell uname -s)
 
 # Build documentation using Sphinx and zip it
 build_docs:

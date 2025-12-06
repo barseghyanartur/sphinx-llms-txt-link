@@ -2,7 +2,7 @@
 name = "sphinx-llms-txt-link"
 description = "Sphinx extension for llms.txt links."
 readme = "README.rst"
-version = "0.1"
+version = "0.1.1"
 dependencies = [
     "docutils",
     "sphinx",
@@ -139,7 +139,7 @@ ignore-path = [
 ]
 
 [tool.pytest.ini_options]
-minversion = "0.1.2"
+minversion = "0.1.1"
 addopts = [
     "-ra",
     "-vvv",
