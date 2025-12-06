@@ -16,25 +16,8 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
-0.1.2
------
-2025-04-10
-
-- Extend ``ignore_comments_endings`` with other most common pragma options.
-- Add ``user_ignore_comments_endings`` configuration options for user-defined
-  additional comments endings to ignore.
-- Document configuration options.
-- Start testing against Python 3.12 and 3.13.
-- Stop testing against Python 3.8.
-
-0.1.1
------
-2024-07-03
-
-- Minor improvement of packaging and docs.
-
 0.1
 ---
-2023-12-18
+2025-12-06
 
 - Initial beta release.

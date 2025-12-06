@@ -11,15 +11,15 @@ Supported Versions
 ------------------
 **Make sure to use the latest version.**
 
-The two most recent ``sphinx-no-pragma`` release series receive security
+The two most recent ``sphinx-llms-txt-link`` release series receive security
 support.
 
 For example, during the development cycle leading to the release
-of ``sphinx-no-pragma`` 0.17.x, support will be provided
-for ``sphinx-no-pragma`` 0.16.x.
+of ``sphinx-llms-txt-link`` 0.17.x, support will be provided
+for ``sphinx-llms-txt-link`` 0.16.x.
 
-Upon the release of ``sphinx-no-pragma`` 0.18.x, security support
-for ``sphinx-no-pragma`` 0.16.x will end.
+Upon the release of ``sphinx-llms-txt-link`` 0.18.x, security support
+for ``sphinx-llms-txt-link`` 0.16.x will end.
 
 .. code-block:: text
 
