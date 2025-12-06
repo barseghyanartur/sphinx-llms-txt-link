@@ -27,7 +27,7 @@ documentation page.
   into an LLM prompt.
 
 .. image:: https://img.shields.io/pypi/v/sphinx-llms-txt-link.svg
-   :target: https://pypi.python.org/pypi/sphinx-llms-txt-link.py
+   :target: https://pypi.python.org/pypi/sphinx-llms-txt-link
    :alt: PyPI Version
 
 .. image:: https://img.shields.io/pypi/pyversions/sphinx-llms-txt-link.svg
