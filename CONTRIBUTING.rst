@@ -1,22 +1,22 @@
 Contributor guidelines
 ======================
 
-.. _documentation: https://sphinx-no-pragma.readthedocs.io/#writing-documentation
-.. _testing: https://sphinx-no-pragma.readthedocs.io/#testing
+.. _documentation: https://sphinx-llms-txt-link.readthedocs.io/#writing-documentation
+.. _testing: https://sphinx-llms-txt-link.readthedocs.io/#testing
 .. _pre-commit: https://pre-commit.com/#installation
 .. _black: https://black.readthedocs.io/
 .. _isort: https://pycqa.github.io/isort/
 .. _doc8: https://doc8.readthedocs.io/
 .. _ruff: https://beta.ruff.rs/docs/
 .. _pip-tools: https://pip-tools.readthedocs.io/
-.. _issues: https://github.com/barseghyanartur/sphinx-no-pragma/issues
-.. _discussions: https://github.com/barseghyanartur/sphinx-no-pragma/discussions
-.. _pull request: https://github.com/barseghyanartur/sphinx-no-pragma/pulls
-.. _support: https://sphinx-no-pragma.readthedocs.io/#support
-.. _installation: https://sphinx-no-pragma.readthedocs.io/#installation
-.. _features: https://sphinx-no-pragma.readthedocs.io/#features
-.. _prerequisites: https://sphinx-no-pragma.readthedocs.io/#prerequisites
-.. _demo: https://sphinx-no-pragma.readthedocs.io/en/latest/demo.html
+.. _issues: https://github.com/barseghyanartur/sphinx-llms-txt-link/issues
+.. _discussions: https://github.com/barseghyanartur/sphinx-llms-txt-link/discussions
+.. _pull request: https://github.com/barseghyanartur/sphinx-llms-txt-link/pulls
+.. _support: https://sphinx-llms-txt-link.readthedocs.io/#support
+.. _installation: https://sphinx-llms-txt-link.readthedocs.io/#installation
+.. _features: https://sphinx-llms-txt-link.readthedocs.io/#features
+.. _prerequisites: https://sphinx-llms-txt-link.readthedocs.io/#prerequisites
+.. _demo: https://sphinx-llms-txt-link.readthedocs.io/en/latest/demo.html
 
 Developer prerequisites
 -----------------------
