@@ -2,7 +2,7 @@
 name = "sphinx-llms-txt-link"
 description = "Sphinx extension for llms.txt links."
 readme = "README.rst"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
     "docutils",
     "sphinx",
@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python",
     "Topic :: Software Development :: Testing",
@@ -139,7 +140,7 @@ ignore-path = [
 ]
 
 [tool.pytest.ini_options]
-minversion = "0.1.1"
+minversion = "0.1.2"
 addopts = [
     "-ra",
     "-vvv",

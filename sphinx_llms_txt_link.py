@@ -4,13 +4,12 @@ import posixpath
 from docutils import nodes
 
 __title__ = "sphinx-llms-txt-link"
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "add_llm_link_node",
-    "copy_custom_css",
     "setup",
     "add_static_path",
 )
@@ -27,6 +26,7 @@ def add_llm_link_node(app, doctree, docname):
     # 2. Retrieve user config for the prefix
     # Defaults to empty string (sibling directory)
     url_prefix = app.config.sphinx_llms_txt_link_url_prefix
+    link_text = app.config.sphinx_llms_txt_link_text
 
     # 3. Construct the final link
     # If the user provided a prefix, we join it.
@@ -47,24 +47,13 @@ def add_llm_link_node(app, doctree, docname):
     html_content = f"""
     <div class="sphinx-llms-txt-link-container">
         <a href="{relative_link}" class="sphinx-llms-txt-link">
-            View llms.txt version
+            {link_text}
         </a>
     </div>
     """
 
     raw_node = nodes.raw("", html_content, format="html")
     doctree.append(raw_node)
-
-
-def copy_custom_css(app, exception):
-    # This hook ensures the CSS file is copied to the build static directory
-    if app.builder.format == "html" and not exception:
-        # Assuming the css file is in a folder named '_static' relative to
-        # this script. It's assumed there's a file
-        # named 'sphinx_llms_txt_link.css'.
-        pass
-        # Alternatively, maybe use `sphinx.util.fileutil.copy_asset` for
-        # moving packaged CSS to the output _static folder.
 
 
 def setup(app):
@@ -81,9 +70,15 @@ def setup(app):
     # format: name, default, rebuild-trigger
     # 'html' means rebuilding html is required if this changes
     app.add_config_value("sphinx_llms_txt_link_url_prefix", "", "html")
+    # Config for the text displayed in the link
+    app.add_config_value(
+        "sphinx_llms_txt_link_text",
+        "View llms.txt version",
+        "html",
+    )
 
     return {
-        "version": "0.1",
+        "version": __version__,
         "parallel_read_safe": True,
         "parallel_write_safe": True
     }
