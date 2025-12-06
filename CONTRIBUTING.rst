@@ -28,8 +28,7 @@ TL;DR:
 
 .. code-block:: sh
 
-    pip install pipx --user  # Install pipx
-    pipx install pre-commit  # Install pre-commit
+    uv tool install pre-commit  # Install pre-commit
     pre-commit install  # Install pre-commit hooks
 
 Installing `pre-commit`_ will ensure you adhere to the project code quality
@@ -37,15 +36,12 @@ standards.
 
 Code standards
 --------------
-`black`_, `isort`_, `ruff`_ and `doc8`_ will be automatically triggered by
+`ruff`_ and `doc8`_ will be automatically triggered by
 `pre-commit`_. Still, if you want to run checks manually:
 
 .. code-block:: sh
 
-    make black
-    make doc8
-    make isort
-    make ruff
+    make pre-commit
 
 Requirements
 ------------
@@ -106,8 +102,8 @@ For example:
 
 **When adding a new feature (in addition to the general list):**
 
-- Make sure to update the documentation (check whether the `installation`_,
-  `features`_ or `demo`_ require changes).
+- Make sure to update the documentation (check whether the `installation`_
+  or `features`_ require changes).
 
 Questions
 ---------
