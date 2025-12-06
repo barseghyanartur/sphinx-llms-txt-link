@@ -1,7 +1,9 @@
+import pickle
 import shutil
 import unittest
 from pathlib import Path
 
+from docutils import nodes
 from sphinx.application import Sphinx
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
@@ -101,7 +103,6 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
         injected into both root and nested pages, with the correct relative
         path.
         """
-
         # Build the docs using the actual Sphinx application
         test_app = Sphinx(
             srcdir=self.docs_dir,
@@ -313,6 +314,51 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
             (
                 f"Absolute URL link missing in install.html. "
                 f"Expected: {expected_nested_link}"
+            ),
+        )
+
+    def test_05_non_html_build_no_injection(self):
+        """
+        Tests that the extension gracefully handles non-HTML
+        builds (e.g., LaTeX) by checking that the raw HTML node is NOT
+        injected into the doctree.
+        """
+        # --- 1. Build the docs using the 'latex' builder ---
+        # The key is to check the *doctree*, not the final output, as the
+        # final output is not HTML.
+        test_app = Sphinx(
+            srcdir=self.docs_dir,
+            confdir=self.docs_dir,
+            outdir=self.build_dir,
+            doctreedir=self.doc_tree_dir,
+            buildername="latex",  # Use a non-html builder
+        )
+        test_app.build()
+
+        # --- 2. Load the index doctree to inspect nodes ---
+        # The doctrees are stored as pickle files in the doctreedir
+        index_doctree_path = self.doc_tree_dir / "index.doctree"
+        self.assertTrue(index_doctree_path.exists())
+
+        # Sphinx uses pickle to store doctrees
+        with open(index_doctree_path, "rb") as f:
+            index_doctree = pickle.load(f)
+
+        # --- 3. Assert the custom raw HTML node is NOT present ---
+        # Search the doctree for the `nodes.raw` element that contains our
+        # class name.
+        has_custom_node = False
+        for node in index_doctree.traverse(nodes.raw):
+            # Check if the raw node has the class name we inject
+            if TEST_CSS_CLASS in node.astext():
+                has_custom_node = True
+                break
+
+        self.assertFalse(
+            has_custom_node,
+            (
+                "Custom LLM link node was unexpectedly injected into the "
+                "doctree during a non-HTML (latex) build."
             ),
         )
 
