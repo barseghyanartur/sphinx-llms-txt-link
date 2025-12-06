@@ -57,17 +57,6 @@ def add_llm_link_node(app, doctree, docname):
     doctree.append(raw_node)
 
 
-def copy_custom_css(app, exception):
-    # This hook ensures the CSS file is copied to the build static directory
-    if app.builder.format == "html" and not exception:
-        # Assuming the css file is in a folder named '_static' relative to
-        # this script. It's assumed there's a file
-        # named 'sphinx_llms_txt_link.css'.
-        pass
-        # Alternatively, maybe use `sphinx.util.fileutil.copy_asset` for
-        # moving packaged CSS to the output _static folder.
-
-
 def setup(app):
     app.connect("doctree-resolved", add_llm_link_node)
 
