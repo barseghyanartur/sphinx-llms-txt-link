@@ -43,7 +43,7 @@ documentation page.
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/badge/docs-llms.txt-blue
-    :target: https://barseghyanartur.github.io/sphinx-llms-txt-link/llms.txt
+    :target: https://sphinx-llms-txt-link.readthedocs.io/en/latest/llms.txt
     :alt: llms.txt - documentation for LLMs
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
