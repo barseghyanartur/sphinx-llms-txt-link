@@ -154,6 +154,168 @@ class TestSphinxLlmLinkBuild(unittest.TestCase):
         # mechanism is working if setup() is correct. The true test is that
         # the link is present in the source, which we checked.
 
+    def test_02_relative_prefix(self):
+        """
+        Tests link injection when a relative url_prefix is
+        configured (e.g., 'text_versions').
+        The link should be 'text_versions/index.txt'
+        and 'text_versions/install.txt'.
+        """
+        # --- 1. Configure the relative prefix in conf.py ---
+        # Note: We must re-create conf.py with the new setting
+        conf_with_rel_prefix = (
+                MINIMAL_CONF_PY
+                + "\nsphinx_llms_txt_link_url_prefix = 'text_versions'"
+        )
+        (self.docs_dir / "conf.py").write_text(
+            conf_with_rel_prefix,
+            encoding="utf-8",
+        )
+
+        # --- 2. Build the docs ---
+        test_app = Sphinx(
+            srcdir=self.docs_dir,
+            confdir=self.docs_dir,
+            outdir=self.build_dir,
+            doctreedir=self.doc_tree_dir,
+            buildername="html",
+        )
+        test_app.build()
+
+        # --- 3. Check Root Document (index.html) ---
+        index_html_path = self.build_dir / "index.html"
+        index_content = index_html_path.read_text(encoding="utf-8")
+        # Expected: <a href="text_versions/index.txt" ...
+        expected_root_link = 'href="text_versions/index.txt"'
+        self.assertIn(
+            expected_root_link, index_content,
+            (
+                f"Relative prefix link missing in index.html. "
+                f"Expected: {expected_root_link}"
+            ),
+        )
+
+        # --- 4. Check Nested Document (guide/install.html) ---
+        install_html_path = self.build_dir / "guide/install.html"
+        install_content = install_html_path.read_text(encoding="utf-8")
+        # Expected: <a href="text_versions/install.txt" ...
+        expected_nested_link = 'href="text_versions/install.txt"'
+        self.assertIn(
+            expected_nested_link, install_content,
+            (
+                f"Relative prefix link missing in install.html. "
+                f"Expected: {expected_nested_link}"
+            )
+        )
+
+    def test_03_absolute_path_prefix(self):
+        """
+        Tests link injection when an absolute path prefix is
+        configured (e.g., '/text_versions').
+        The link should be '/text_versions/index.txt'
+        and '/text_versions/install.txt'.
+        """
+        # --- 1. Configure the absolute path prefix in conf.py ---
+        abs_path_prefix = "/llm-txt-files"
+        conf_with_abs_prefix = (
+                MINIMAL_CONF_PY
+                + f"\nsphinx_llms_txt_link_url_prefix = '{abs_path_prefix}'"
+        )
+        (self.docs_dir / "conf.py").write_text(
+            conf_with_abs_prefix,
+            encoding="utf-8",
+        )
+
+        # --- 2. Build the docs ---
+        test_app = Sphinx(
+            srcdir=self.docs_dir,
+            confdir=self.docs_dir,
+            outdir=self.build_dir,
+            doctreedir=self.doc_tree_dir,
+            buildername="html",
+        )
+        test_app.build()
+
+        # --- 3. Check Root Document (index.html) ---
+        index_html_path = self.build_dir / "index.html"
+        index_content = index_html_path.read_text(encoding="utf-8")
+        # Expected: <a href="/llm-txt-files/index.txt" ...
+        expected_root_link = f'href="{abs_path_prefix}/index.txt"'
+        self.assertIn(
+            expected_root_link, index_content,
+            (
+                f"Absolute path link missing in index.html. "
+                f"Expected: {expected_root_link}"
+            ),
+        )
+
+        # --- 4. Check Nested Document (guide/install.html) ---
+        install_html_path = self.build_dir / "guide/install.html"
+        install_content = install_html_path.read_text(encoding="utf-8")
+        # Expected: <a href="/llm-txt-files/install.txt" ...
+        expected_nested_link = f'href="{abs_path_prefix}/install.txt"'
+        self.assertIn(
+            expected_nested_link, install_content,
+            (
+                f"Absolute path link missing in install.html. "
+                f"Expected: {expected_nested_link}"
+            ),
+        )
+
+    def test_04_absolute_url_prefix(self):
+        """
+        Tests link injection when an absolute URL prefix is
+        configured (e.g., 'https://...').
+        The link should be 'https://example.com/llm/index.txt'
+        and 'https://example.com/llm/install.txt'.
+        """
+        # --- 1. Configure the absolute URL prefix in conf.py ---
+        abs_url_prefix = "https://example.com/llm"
+        conf_with_abs_url = (
+                MINIMAL_CONF_PY
+                + f"\nsphinx_llms_txt_link_url_prefix = '{abs_url_prefix}'"
+        )
+        (self.docs_dir / "conf.py").write_text(
+            conf_with_abs_url,
+            encoding="utf-8",
+        )
+
+        # --- 2. Build the docs ---
+        test_app = Sphinx(
+            srcdir=self.docs_dir,
+            confdir=self.docs_dir,
+            outdir=self.build_dir,
+            doctreedir=self.doc_tree_dir,
+            buildername="html",
+        )
+        test_app.build()
+
+        # --- 3. Check Root Document (index.html) ---
+        index_html_path = self.build_dir / "index.html"
+        index_content = index_html_path.read_text(encoding="utf-8")
+        # Expected: <a href="https://example.com/llm/index.txt" ...
+        expected_root_link = f'href="{abs_url_prefix}/index.txt"'
+        self.assertIn(
+            expected_root_link, index_content,
+            (
+                f"Absolute URL link missing in index.html. "
+                f"Expected: {expected_root_link}"
+            ),
+        )
+
+        # --- 4. Check Nested Document (guide/install.html) ---
+        install_html_path = self.build_dir / "guide/install.html"
+        install_content = install_html_path.read_text(encoding="utf-8")
+        # Expected: <a href="https://example.com/llm/install.txt" ...
+        expected_nested_link = f'href="{abs_url_prefix}/install.txt"'
+        self.assertIn(
+            expected_nested_link, install_content,
+            (
+                f"Absolute URL link missing in install.html. "
+                f"Expected: {expected_nested_link}"
+            ),
+        )
+
     def tearDown(self):
         # Clean up the build directory and source directory
         if self.build_dir.exists():
