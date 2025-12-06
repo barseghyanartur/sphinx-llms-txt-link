@@ -78,7 +78,7 @@ Features
 
 Prerequisites
 =============
-- Python 3.10+
+- Python 3.9+
 - Sphinx 6.0+
 
 Your Sphinx documentation must be configured to output `.txt` files (e.g.,
