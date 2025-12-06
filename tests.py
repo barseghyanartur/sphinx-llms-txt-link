@@ -19,9 +19,9 @@ MINIMAL_CONF_PY = """
 import os
 import sys
 # Ensure the extension under test is findable
-sys.path.insert(0, os.path.abspath('.')) 
+sys.path.insert(0, os.path.abspath('.'))
 
-# Assuming the extension file is named 'sphinx_llm_link.py' 
+# Assuming the extension file is named 'sphinx_llm_link.py'
 # and is available in the Python path or a specified directory
 extensions = [
     "sphinx_llms_txt_link",
