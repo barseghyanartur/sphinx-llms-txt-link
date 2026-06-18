@@ -110,7 +110,7 @@ pygments==2.19.2
     #   sphinx
 pyproject-hooks==1.2.0
     # via build
-pytest==9.0.1
+pytest==9.0.3
     # via
     #   sphinx-llms-txt-link (pyproject.toml)
     #   pytest-codeblock
